@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, width=device-width">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+        <link href="/static/recipe.css" rel="stylesheet">
+        <link href="/static/favicon.ico" rel="icon">
+        <title>Foodle</title>
+    </head>
+    <body>
+        <nav class="navbar navbar-dark bg-dark">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="/">Foodle</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                  <a class="nav-link" href="/logout">Log Out</a>
+                </div>
+              </div>
+            </div>
+          </nav>
+        <div class="col-md-8 offset-md-2 explore" id="recipes">
+
+        </div>
+        <script>
+            const urlParams = new URLSearchParams(window.location.search);
+            let foods = urlParams.get('food');
+            const api = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
+            const url = api + foods;
+            fetch(url)
+                .then(response => response.json())
+                .then(json_data => {
+                    if (json_data.meals){
+                        const meal = json_data.meals;
+                        const recipe = meal[Math.floor(Math.random() * meal.length)];
+                        const mainBody = document.getElementById('recipes');
+
+                        const prompt = document.createElement('h1');
+                        prompt.innerHTML = "Congrats! Here's a special recipe we found!";
+                        mainBody.appendChild(prompt);
+
+                        const titlePage = document.createElement('h2');
+                        titlePage.innerHTML = 'Recipe';
+                        mainBody.appendChild(titlePage);
+
+                        const name = document.createElement('p');
+                        let mealName = recipe['strMeal'];
+                        name.innerHTML = '<strong>Meal: </strong>' + mealName;
+                        mainBody.appendChild(name);
+
+                        const category = document.createElement('p');
+                        let categName = recipe['strCategory'];
+                        category.innerHTML = '<strong>Category: </strong>' + categName;
+                        mainBody.appendChild(category);
+
+                        const origin = document.createElement('p');
+                        let strOrigin = recipe['strArea'];
+                        origin.innerHTML = '<strong>Origin: </strong>' + strOrigin;
+                        mainBody.appendChild(origin);
+
+                        const banner = document.createElement('h3');
+                        banner.setAttribute('id', 'ingredients')
+                        banner.innerHTML = 'Ingredients';
+                        mainBody.appendChild(banner);
+
+                        for(let i =0; i<20; i++){
+                            let keyName = 'strIngredient' + (i+1);
+                            let measureName = 'strMeasure' + (i+1);
+                            let ingredient = document.createElement('p');
+                            strIngr = recipe[keyName];
+                            strMeasure = recipe[measureName];
+                            if (strIngr){
+                                ingredient.innerHTML = strIngr + " - " + strMeasure;
+                                mainBody.appendChild(ingredient);
+                            }
+
+                        }
+                        const instruct = document.createElement('h3');
+                        instruct.setAttribute('id', 'instructions')
+                        instruct.innerHTML = 'Instructions';
+                        mainBody.appendChild(instruct);
+
+                        const instructions = document.createElement('p');
+                        let strInstruct = recipe['strInstructions'];
+                        let formattedStr = strInstruct.replace(/\r\n/g, '<br>')
+                        instructions.innerHTML = formattedStr;
+                        mainBody.appendChild(instructions);
+
+                        let strLink = recipe['strSource'];
+                        if (strLink){
+
+                            const link = document.createElement('p');
+                            const anchor = document.createElement('a');
+                            anchor.href = strLink;
+                            anchor.textContent = 'Source';
+                            link.appendChild(anchor);
+                            mainBody.appendChild(link);
+                        }
+                        let strYoutube = recipe['strYoutube'];
+                        if (strYoutube){
+                            const youtube = document.createElement('p');
+                            const anchr = document.createElement('a');
+                            anchr.href = strYoutube;
+                            anchr.textContent = 'Watch on Youtube';
+                            youtube.appendChild(anchr);
+                            mainBody.appendChild(youtube);
+
+                        }
+                    }
+                    else {
+                        const api = 'https://api.dictionaryapi.dev/api/v2/entries/en/';
+                        const url = api + foods;
+                        fetch(url)
+                            .then(response => response.json())
+                            .then(jsonData =>{
+                                const mainBody = document.getElementById('recipes');
+                                firstObj = jsonData[Math.floor(Math.random() * jsonData.length)];
+                                let meanings = firstObj.meanings;
+
+                                secondObj = meanings[Math.floor(Math.random() * meanings.length)];
+                                let definition = secondObj.definitions;
+
+
+                                thirdObj = definition[Math.floor(Math.random() * definition.length)];
+                                describe = thirdObj.definition;
+                                
+
+                                const prompt = document.createElement('h1');
+                                prompt.innerHTML = "Congrats! Here's a definition we found!";
+                                mainBody.appendChild(prompt);
+
+                                const titlePg = document.createElement('h2');
+                                let formatFoods = foods.charAt(0).toUpperCase() + foods.slice(1);
+                                titlePg.innerHTML = formatFoods;
+                                mainBody.appendChild(titlePg);
+
+                                const def = document.createElement('h3');
+                                def.setAttribute('id', 'def')
+                                def.innerHTML = 'Definition';
+                                mainBody.appendChild(def);
+
+                                const description = document.createElement('p');
+                                let data = describe;
+                                description.innerHTML = data;
+                                mainBody.appendChild(description);
+
+                                const caveat = document.createElement('p');
+                                caveat.setAttribute('id', 'caveat');
+                                caveat.innerHTML = "(Refresh to potentially see more definitions)";
+                                mainBody.appendChild(caveat);
+
+
+
+                            })
+                            .catch(error => {
+                                const message = document.createElement('h1');
+                                let mainBody = document.getElementById('recipes');
+                                message.innerHTML = 'Congrats, you found the word! Hooray!!!';
+                                mainBody.appendChild(message);
+                                const inform = document.createElement('p');
+                                inform.setAttribute('id', 'caveat');
+                                inform.innerHTML = '(This word is a mystery for us all)';
+                                mainBody.appendChild(inform);
+                                console.error('Error:', error);
+                            });
+                    }
+                    })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+        </script>
+    </body>
+</html>

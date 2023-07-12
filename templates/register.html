@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+        <link href="/static/styles.css" rel="stylesheet">
+        <link href="/static/favicon.ico" rel="icon">
+    </head>
+
+    <body class="full">
+        <nav class="navbar navbar-dark bg-dark">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">Foodle</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              </div>
+            </div>
+          </nav>
+    <main class="container-fluid py-5 text-center">
+    <div class="col-md-8 offset-md-2 explore">
+            <form action="/register" method="post">
+             <div class="mb-3">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="username" name="username" placeholder="Username" type="text">
+            </div>
+            <div class="mb-3">
+            <input class="form-control mx-auto w-auto" id="password" name="password" placeholder="Password" type="password">
+            </div>
+            <div class="mb-3">
+                <input class="form-control mx-auto w-auto" id="confirmation" name="confirmation" placeholder="Confirm Password" type="password">
+                </div>
+            <button class="btn btn-primary" type="submit">Register</button>
+
+            </form>
+    </div>
+    </main>
+    <footer>
+    {% with message = get_flashed_messages() %}
+    {% if message %}
+      <ul class="alert text-center">
+        {% for messages in message %}
+          <li>{{ messages }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% endwith %}
+  </footer>
+    </body>
+
+</html>

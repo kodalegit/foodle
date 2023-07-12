@@ -1,4 +1,4 @@
- ![Foodle](/project/static/favicon.ico)
+ ![Foodle](/static/favicon.ico)
  # FOODLE
 ### Video Demo: https://youtu.be/__GzTQLhIF0
 ## Description
